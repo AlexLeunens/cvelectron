@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { useState } from "react";
+import MainPage from "./components/mainPage/MainPage";
+import { navigationComponents } from "./enums/navigationComponents";
+import CvCreateMainPage from "./components/cvCreate/CvCreateMainPage";
+import LanguageContext from "./languages/LanguageContext";
+import { languageSelector } from "./languages/languageSelector";
 
-function App() {
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+  },
+});
+
+const App = () => {
+  const [component, setComponent] = useState("");
+  const [language, setLanguage] = useState("french");
+
+  const switchComponent = () => {
+    console.log(component);
+    switch (component) {
+      case navigationComponents.CV_CREATION:
+        return (<CvCreateMainPage setComponent={setComponent} />);
+      default:
+        return (<MainPage setComponent={setComponent} />);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LanguageContext.Provider value={ {messages:languageSelector(language), language, setLanguage} }>
+      <MuiThemeProvider theme={darkTheme}>
+        <div className="App">
+          {switchComponent(component)}
+        </div>
+      </MuiThemeProvider>
+    </LanguageContext.Provider>
   );
-}
+};
 
 export default App;
