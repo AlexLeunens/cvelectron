@@ -1,17 +1,19 @@
-import React from "react";
+import { PDFViewer } from "@react-pdf/renderer";
 import PropTypes from "prop-types";
-import { Button } from "@material-ui/core";
-import { navigationComponents } from "../../enums/navigationComponents";
+import React, { useContext } from "react";
 import LanguageContext from "../../languages/LanguageContext";
-import { useContext } from "react";
+import CvCreateSidebar from "./CvCreateSidebar";
+import Resume from "./Resume/Resume";
 
 const CvCreateMainPage = ({ setComponent }) => {
-    const {messages} = useContext(LanguageContext);
+    const { messages } = useContext(LanguageContext);
     return (
         <>
-            <Button variant="contained" onClick={() => setComponent(navigationComponents.HOME_PAGE)}>
-                {messages.go_to_homepage}
-            </Button>
+            <CvCreateSidebar setComponent={setComponent} />
+
+            <PDFViewer width="1000" height="100%" className="app" >
+                <Resume />
+            </PDFViewer>
         </>
     );
 };
